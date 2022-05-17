@@ -6,11 +6,11 @@
 
 
     // enemy variables
-    var enemyName = "Roborto";
+    var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
     var enemyHP = 50;
     var enemyAtk = 12;
 
-var fight = function() {
+var fight = function(enemyName) {
     // attack function
     var attack = function(attackerName, attackerAtk, opponentName, opponentHP) {
         opponentHP -= attackerAtk;
@@ -76,4 +76,7 @@ var fight = function() {
     }
 }
 
-fight();
+// fight();
+for(var i = 0; i < enemyNames.length; i++) {
+    fight(enemyNames[i])
+  }
