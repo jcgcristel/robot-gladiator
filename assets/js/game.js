@@ -31,30 +31,32 @@ var fight = function(enemyName) {
      // check if player wants to fight
     var promptFight = window.prompt("FIGHT or SKIP this battle. Enter 'FIGHT' or 'SKIP' to choose.")
 
-    
+   
     if (promptFight === "fight" || promptFight === "FIGHT") {
-        // player attacks enemy
-        enemyHP -= playerAtk;
-        console.log(playerName+" attacked "+enemyName+". "+enemyName+" now has "+enemyHP+" HP.");
-        
-        // checks enemy HP
-        if (enemyHP <= 0) {
-            window.alert(enemyName + " has died!");
-        }
-        else {
-            window.alert(enemyName + " still has " + enemyHP + " HP.")
-        }
+        while (enemyHP > 0) {    
+            // player attacks enemy
+            enemyHP -= playerAtk;
+            console.log(playerName+" attacked "+enemyName+". "+enemyName+" now has "+enemyHP+" HP.");
+            
+            // checks enemy HP
+            if (enemyHP <= 0) {
+                window.alert(enemyName + " has died!");
+            }
+            else {
+                window.alert(enemyName + " still has " + enemyHP + " HP.")
+            }
 
-        // enemy attacks player
-        playerHP -= enemyAtk;
-        console.log(enemyName+" attacked "+playerName+". "+playerName+" now has "+playerHP+" HP.");
+            // enemy attacks player
+            playerHP -= enemyAtk;
+            console.log(enemyName+" attacked "+playerName+". "+playerName+" now has "+playerHP+" HP.");
 
-        // checks player hp
-        if (playerHP <= 0) {
-            window.alert(playerName + " has died!");
-        }
-        else {
-            window.alert(playerName + " still has " + playerHP + " HP.");
+            // checks player hp
+            if (playerHP <= 0) {
+                window.alert(playerName + " has died!");
+            }
+            else {
+                window.alert(playerName + " still has " + playerHP + " HP.");
+            }
         }
     }
     else if (promptFight === "skip" || promptFight === "SKIP") {
@@ -78,5 +80,7 @@ var fight = function(enemyName) {
 
 // fight();
 for(var i = 0; i < enemyNames.length; i++) {
+    debugger;
+    // fight enemies
     fight(enemyNames[i])
   }
