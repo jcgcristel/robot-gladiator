@@ -10,30 +10,13 @@
     var enemyHP = 50;
     var enemyAtk = 12;
 
-var fight = function(enemyName) {
-    // attack function
-    var attack = function(attackerName, attackerAtk, opponentName, opponentHP) {
-        opponentHP -= attackerAtk;
-        console.log(attackerName + " attacked " + opponentName + ". " + opponentName + " now has " + opponentHP + ".");
-
-        // checks HP
-        if (opponentHP <= 0) {
-            window.alert(opponentName + " has died");
-        }
-        else {
-            window.alert(opponentName + " still has " + opponentHP + " HP.");
-        }
-    }
-
-    // round start
-    window.alert("Welcome to Robot Gladiators");
-
+var fight = function(enemyName, i) {
      // check if player wants to fight
-    var promptFight = window.prompt("FIGHT or SKIP this battle. Enter 'FIGHT' or 'SKIP' to choose.")
+    var promptFight = window.prompt("FIGHT or SKIP this battle. Enter 'FIGHT' or 'SKIP' to choose.");
 
    
     if (promptFight === "fight" || promptFight === "FIGHT") {
-        while (enemyHP > 0) {    
+        while (enemyHP > 0 && playerHP > 0) {    
             // player attacks enemy
             enemyHP -= playerAtk;
             console.log(playerName+" attacked "+enemyName+". "+enemyName+" now has "+enemyHP+" HP.");
@@ -41,6 +24,11 @@ var fight = function(enemyName) {
             // checks enemy HP
             if (enemyHP <= 0) {
                 window.alert(enemyName + " has died!");
+
+                // award player for beating enemy
+                playerMoney += 20;
+
+                break;
             }
             else {
                 window.alert(enemyName + " still has " + enemyHP + " HP.")
@@ -52,7 +40,8 @@ var fight = function(enemyName) {
 
             // checks player hp
             if (playerHP <= 0) {
-                window.alert(playerName + " has died!");
+                window.alert(playerName + " has died! Game over!");
+                break;
             }
             else {
                 window.alert(playerName + " still has " + playerHP + " HP.");
@@ -63,24 +52,76 @@ var fight = function(enemyName) {
         console.log(playerName + " has chosen to skip the fight!");
 
         // skip confirmation
-        var confirmSkip = window.prompt("Are you sure you'd like to quit? Type 'Y' or 'N'");
-        if (confirmSkip === "Y" || confirmSkip === "y"){
+        var confirmSkip = window.confirm("Are you sure you'd like to quit? Type 'Y' or 'N'");
+        if (confirmSkip){
             window.alert(playerName + " has skipped the fight. Goodybye!");
             playerMoney -= 2;
         }
         else {
-            fight();
+            fight(enemyNames[i], i);
         }
     }
     else {
         window.alert("Choose a valid option. Try again.");
-        fight();
+        fight(enemyNames[i], i);
     }
 }
 
-// fight();
-for(var i = 0; i < enemyNames.length; i++) {
-    debugger;
-    // fight enemies
-    fight(enemyNames[i])
-  }
+// play again
+var startGame = function() {
+    // reset player stats
+    playerHP = 100;
+    playerAtk = 10;
+    playerMoney = 10;
+
+    for (i = 0; enemyNames.length; i++) {
+        if (playerHP > 0) {
+            window.alert("Welcome to Robot Gladiators! Round "+ (i + 1));
+
+            enemyHP = 50;
+
+            fight(enemyNames[i])
+        }
+        else {
+            window.alert("You have lost your robot in battle! Game over!")
+            break;
+        }
+    }
+
+    endGame();
+}
+
+// end game
+var endGame = function() {
+    window.alert("The game has now ended. Let's see how you did!");
+
+    // if player is alive
+    if (playerHP > 0) {
+        windows.alert("Great job, you'vve survived the game! you now have a scare of " + playerMoney + ".");
+    }
+    else {
+        windows.alert("You've lost your robot in life");
+    }
+
+    // play again?
+    var playAgainConfirm = window.confirm("Would you like to play again?");
+
+    if (playAgainConfirm) {
+        // restart
+        startGame();
+    }
+    else {
+        window.alert("Thank you for playing Robot Gladiators! Come back soon.");
+    }
+}
+
+// shop
+var shop = function() {
+    // refill 
+
+    // upgrade
+
+    // leave
+}
+
+startGame();
