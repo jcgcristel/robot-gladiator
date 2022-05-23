@@ -1,89 +1,142 @@
-    // player variables
-    var playerName = "Test";//window.prompt("What is your robot's name?");
-    var playerHP = 100;
-    var playerAtk = 10;
-    var playerMoney = 10;
+var rng = function(min, max){
+    var value = Math.floor(Math.random() * (max - min + 1) + min);
 
+    return value;
+}
+
+    // player variables
+    var playerInfo = {
+        name: "Test", //window.prompt("What is your robot's name?");
+        hp: 100,
+        atk: 10,
+        money: 10,
+
+        // object functions
+        reset: function() {
+            this.hp = 100;
+            this.atk = 10;
+            this.money = 10;
+        },
+        refillHP: function() {
+            if (this.money >= 7) {
+                window.alert("Refilling player's health by 20 for 7 coins.");
+
+                // increase hp and decrease coins
+                this.hp += 20;
+                this.money -= 7;
+                
+            }
+            else {
+                window.alert("You don't have enough money!");
+            }
+        },
+        upgradeAtk: function() {
+            if (this.money >= 7) {
+                window.alert("Upgrade player's attack by 6 or 7 dollars.");
+
+                // increase attack and decrease money
+                this.atk += 6;
+                this.money -= 7;    
+            }
+            else {
+                window.alert("You donn't have enough money!");
+            }
+        }
+    }
 
     // enemy variables
-    var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
-    var enemyHP = 50;
-    var enemyAtk = 12;
+    var enemyInfo = [
+        {
+            name: "Roborto",
+            hp: 50,
+            atk: rng(10, 14)
+        },
+        {
+            name: "Amy",
+            hp: 50,
+            atk: rng(10, 14)
+        },
+        {
+            name: "Robo Trumble",
+            hp: 50,
+            atk: rng(10, 14)
+        }
+    ];
 
-var fight = function(enemyName, i) {
-     // check if player wants to fight
+
+var fight = function(enemy, i) {
+
+    // check if player wants to fight
     var promptFight = window.prompt("FIGHT or SKIP this battle. Enter 'FIGHT' or 'SKIP' to choose.");
-
-   
+    
+    
     if (promptFight === "fight" || promptFight === "FIGHT") {
-        while (enemyHP > 0 && playerHP > 0) {    
+        while (enemy.hp > 0 && playerInfo.hp > 0) {    
             // player attacks enemy
-            enemyHP -= playerAtk;
-            console.log(playerName+" attacked "+enemyName+". "+enemyName+" now has "+enemyHP+" HP.");
+            enemy.hp -= playerInfo.atk;
+            console.log(playerInfo.name+" attacked "+enemy.name+". "+enemy.name+" now has "+enemy.hp+" HP.");
             
             // checks enemy HP
-            if (enemyHP <= 0) {
-                window.alert(enemyName + " has died!");
+            if (enemy.hp <= 0) {
+                window.alert(enemy.name + " has died!");
 
                 // award player for beating enemy
-                playerMoney += 20;
+                playerInfo.money += 20;
 
                 break;
             }
             else {
-                window.alert(enemyName + " still has " + enemyHP + " HP.")
+                window.alert(enemy.name + " still has " + enemy.hp + " HP.")
             }
 
             // enemy attacks player
-            playerHP -= enemyAtk;
-            console.log(enemyName+" attacked "+playerName+". "+playerName+" now has "+playerHP+" HP.");
+            playerInfo.hp -= enemy.atk;
+            console.log(enemy.name+" attacked "+playerInfo.name+". "+playerInfo.name+" now has "+playerInfo.hp+" HP.");
 
             // checks player hp
-            if (playerHP <= 0) {
-                window.alert(playerName + " has died! Game over!");
+            if (playerInfo.hp <= 0) {
+                window.alert(playerInfo.name + " has died! Game over!");
                 break;
             }
             else {
-                window.alert(playerName + " still has " + playerHP + " HP.");
+                window.alert(playerInfo.name + " still has " + playerInfo.hp + " HP.");
             }
         }
     }
     else if (promptFight === "skip" || promptFight === "SKIP") {
-        console.log(playerName + " has chosen to skip the fight!");
+        console.log(playerInfo.name + " has chosen to skip the fight!");
 
         // skip confirmation
         var confirmSkip = window.confirm("Are you sure you'd like to quit? Type 'Y' or 'N'");
         if (confirmSkip){
-            window.alert(playerName + " has skipped the fight. Goodybye!");
-            playerMoney -= 2;
+            window.alert(playerInfo.name + " has skipped the fight. Goodybye!");
+            playerInfo.money -= 2;
         }
         else {
-            fight(enemyNames[i], i);
+            fight(enemyInfo[i], i);
         }
     }
     else {
         window.alert("Choose a valid option. Try again.");
-        fight(enemyNames[i], i);
+        fight(enemyInfo[i], i);
     }
 }
 
 // play again
 var startGame = function() {
     // reset player stats
-    playerHP = 100;
-    playerAtk = 10;
-    playerMoney = 10;
+    playerInfo.reset();
 
-    for (i = 0; enemyNames.length; i++) {
-        if (playerHP > 0) {
+    for (i = 0; enemyInfo.length; i++) {
+        if (playerInfo.hp > 0) {
             window.alert("Welcome to Robot Gladiators! Round "+ (i + 1));
 
-            enemyHP = 50;
+            //enemy.hp = rng(40, 60);
 
-            fight(enemyNames[i]);
+            fight(enemyInfo[i]);
 
              // if not at the last enemy in the array
-            if (playerHP > 0 && i < enemyNames.length - 1) {
+            if (playerInfo.hp > 0 && i < enemyInfo.length - 1) {
                 // go to shop confirmation
                 var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
                 
@@ -108,8 +161,8 @@ var endGame = function() {
     window.alert("The game has now ended. Let's see how you did!");
 
     // if player is alive
-    if (playerHP > 0) {
-        windows.alert("Great job, you've survived the game! you now have a scare of " + playerMoney + ".");
+    if (playerInfo.hp > 0) {
+        windows.alert("Great job, you've survived the game! you now have a scare of " + playerInfo.money + ".");
     }
     else {
         windows.alert("You've lost your robot in life");
@@ -135,32 +188,14 @@ var shop = function() {
         // refill 
         case "REFILL":
         case "refill":
-            if (playerMoney >= 7) {
-                window.alert("Refilling player's health by 20 for 7 coins.");
-
-                // increase hp and decrease coins
-                playerHP += 20;
-                playerMoney -= 7;
-                
-            }
-            else {
-                window.alert("You don't have enough money!");
-            }
+            playerInfo.refillHP();
             
             break;
+            
         // upgrade
         case "UPGRADE":
         case "upgrade":
-            if (playerMoney >= 7) {
-                window.alert("Upgrade player's attack by 6 or 7 dollars.");
-
-                // increase attack and decrease money
-                playerAtk += 6;
-                playerMoney -= 7;    
-            }
-            else {
-                window.alert("You donn't have enough money!");
-            }
+            playerInfo.upgradeAtk();
 
             break;
     
