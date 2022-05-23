@@ -4,65 +4,75 @@ var rng = function(min, max){
     return value;
 }
 
-    // player variables
-    var playerInfo = {
-        name: "Test", //window.prompt("What is your robot's name?");
-        hp: 100,
-        atk: 10,
-        money: 10,
+var getPlayerName = function() {
+    var name = "";
 
-        // object functions
-        reset: function() {
-            this.hp = 100;
-            this.atk = 10;
-            this.money = 10;
-        },
-        refillHP: function() {
-            if (this.money >= 7) {
-                window.alert("Refilling player's health by 20 for 7 coins.");
-
-                // increase hp and decrease coins
-                this.hp += 20;
-                this.money -= 7;
-                
-            }
-            else {
-                window.alert("You don't have enough money!");
-            }
-        },
-        upgradeAtk: function() {
-            if (this.money >= 7) {
-                window.alert("Upgrade player's attack by 6 or 7 dollars.");
-
-                // increase attack and decrease money
-                this.atk += 6;
-                this.money -= 7;    
-            }
-            else {
-                window.alert("You donn't have enough money!");
-            }
-        }
+    while (name == "" || name === null) {
+        name = prompt("What is your robot's name?");
     }
 
-    // enemy variables
-    var enemyInfo = [
-        {
-            name: "Roborto",
-            hp: 50,
-            atk: rng(10, 14)
-        },
-        {
-            name: "Amy",
-            hp: 50,
-            atk: rng(10, 14)
-        },
-        {
-            name: "Robo Trumble",
-            hp: 50,
-            atk: rng(10, 14)
-        }
-    ];
+    return name;
+}
 
+// player variables
+var playerInfo = {
+    name: getPlayerName(),
+    hp: 100,
+    atk: 10,
+    money: 10,
+
+    // object functions
+    
+    reset: function() {
+        this.hp = 100;
+        this.atk = 10;
+        this.money = 10;
+    },
+    refillHP: function() {
+        if (this.money >= 7) {
+            window.alert("Refilling player's health by 20 for 7 coins.");
+
+            // increase hp and decrease coins
+            this.hp += 20;
+            this.money -= 7;
+            
+        }
+        else {
+            window.alert("You don't have enough money!");
+        }
+    },
+    upgradeAtk: function() {
+        if (this.money >= 7) {
+            window.alert("Upgrade player's attack by 6 or 7 dollars.");
+
+            // increase attack and decrease money
+            this.atk += 6;
+            this.money -= 7;    
+        }
+        else {
+            window.alert("You don't have enough money!");
+        }
+    }
+}
+
+// enemy variables
+var enemyInfo = [
+    {
+        name: "Roborto",
+        hp: 50,
+        atk: rng(10, 14)
+    },
+    {
+        name: "Amy",
+        hp: 50,
+        atk: rng(10, 14)
+    },
+    {
+        name: "Robo Trumble",
+        hp: 50,
+        atk: rng(10, 14)
+    }
+]
 
 var fight = function(enemy, i) {
 
