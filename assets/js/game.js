@@ -8,7 +8,7 @@ var getPlayerName = function() {
     var name = "";
 
     while (name == "" || name === null) {
-        name = prompt("What is your robot's name?");
+        name = window.prompt("What is your robot's name?");
     }
 
     return name;
@@ -74,62 +74,73 @@ var enemyInfo = [
     }
 ]
 
-var fight = function(enemy, i) {
+var fightOrSkip = function() {
+    // fight or skip?
+    var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+    promptFight = promptFight.toLowerCase();
 
-    // check if player wants to fight
-    var promptFight = window.prompt("FIGHT or SKIP this battle. Enter 'FIGHT' or 'SKIP' to choose.");
-    
-    
-    if (promptFight === "fight" || promptFight === "FIGHT") {
-        while (enemy.hp > 0 && playerInfo.hp > 0) {    
-            // player attacks enemy
-            enemy.hp -= playerInfo.atk;
-            console.log(playerInfo.name+" attacked "+enemy.name+". "+enemy.name+" now has "+enemy.hp+" HP.");
-            
-            // checks enemy HP
-            if (enemy.hp <= 0) {
-                window.alert(enemy.name + " has died!");
+    // confitional recursive function
+    if (promptFight === "" || promptFight === null) {
+        window.alert("You need to provide a valid answer! Please try again.");
+        return fightOrSkip();
+    }
 
-                // award player for beating enemy
-                playerInfo.money += 20;
+    // skip
+    if (promptFight === "skip") {
+        // skip confirmation
+        var confirmSkip = window.confirm("Are you sure you'd like to quit");
 
-                break;
-            }
-            else {
-                window.alert(enemy.name + " still has " + enemy.hp + " HP.")
-            }
+        // leave fight when yes
+        if (confirmSkip) {
+            window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
 
-            // enemy attacks player
-            playerInfo.hp -= enemy.atk;
-            console.log(enemy.name+" attacked "+playerInfo.name+". "+playerInfo.name+" now has "+playerInfo.hp+" HP.");
-
-            // checks player hp
-            if (playerInfo.hp <= 0) {
-                window.alert(playerInfo.name + " has died! Game over!");
-                break;
-            }
-            else {
-                window.alert(playerInfo.name + " still has " + playerInfo.hp + " HP.");
-            }
+            // cost money to skip
+            playerInfo.money -= 10;
+            return true;
         }
     }
-    else if (promptFight === "skip" || promptFight === "SKIP") {
-        console.log(playerInfo.name + " has chosen to skip the fight!");
 
-        // skip confirmation
-        var confirmSkip = window.confirm("Are you sure you'd like to quit? Type 'Y' or 'N'");
-        if (confirmSkip){
-            window.alert(playerInfo.name + " has skipped the fight. Goodybye!");
-            playerInfo.money -= 2;
+    return false;
+}
+
+var fight = function(enemy, i) {
+  
+    while (enemy.hp > 0 && playerInfo.hp > 0) {
+        if (fightOrSkip()) {
+            break;
+        }
+        
+        // player attacks enemy
+        enemy.hp -= playerInfo.atk;
+        console.log(playerInfo.name+" attacked "+enemy.name+". "+enemy.name+" now has "+enemy.hp+" HP.");
+        
+        // checks enemy HP
+        if (enemy.hp <= 0) {
+            window.alert(enemy.name + " has died!");
+
+            // award player for beating enemy
+            playerInfo.money += 20;
+
+            break;
         }
         else {
-            fight(enemyInfo[i], i);
+            window.alert(enemy.name + " still has " + enemy.hp + " HP.")
+        }
+
+        // enemy attacks player
+        playerInfo.hp -= enemy.atk;
+        console.log(enemy.name+" attacked "+playerInfo.name+". "+playerInfo.name+" now has "+playerInfo.hp+" HP.");
+
+        // checks player hp
+        if (playerInfo.hp <= 0) {
+            window.alert(playerInfo.name + " has died! Game over!");
+            break;
+        }
+        else {
+            window.alert(playerInfo.name + " still has " + playerInfo.hp + " HP.");
         }
     }
-    else {
-        window.alert("Choose a valid option. Try again.");
-        fight(enemyInfo[i], i);
-    }
+    
 }
 
 // play again
