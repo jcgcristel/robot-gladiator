@@ -99,7 +99,6 @@ var fightOrSkip = function() {
             return true;
         }
     }
-
     return false;
 }
 
@@ -109,11 +108,12 @@ var fight = function(enemy, i) {
     if (Math.random() > 0.5){
         playerTurn = false;
     }
-  
+    
     while (enemy.hp > 0 && playerInfo.hp > 0) {
+  
         if (fightOrSkip()) {
             break;
-        }
+        }       
         
         // player attacks enemy
         enemy.hp -= playerInfo.atk;
@@ -125,7 +125,6 @@ var fight = function(enemy, i) {
 
             // award player for beating enemy
             playerInfo.money += 20;
-
             break;
         }
         else {
@@ -145,10 +144,10 @@ var fight = function(enemy, i) {
             window.alert(playerInfo.name + " still has " + playerInfo.hp + " HP.");
         }
 
-        // switch turn order for next round
-        playerTurn = !playerTurn;
     }
-    
+
+    // switch turn order for next round
+    playerTurn = !playerTurn;    
 }
 
 // play again
@@ -176,7 +175,7 @@ var startGame = function() {
             }
 
             else {
-                window.alert("You have lost your robot in battle! Game over!")
+                // window.alert("You have lost your robot in battle! Game over!")
                 break;
             }
         }
@@ -188,13 +187,30 @@ var startGame = function() {
 // end game
 var endGame = function() {
     window.alert("The game has now ended. Let's see how you did!");
+     
+    // check highscore
+    var highScore = localStorage.getItem("highscore");
+    if (highScore === null) {
+        highScore = 0;
+    }
 
     // if player is alive
     if (playerInfo.hp > 0) {
-        windows.alert("Great job, you've survived the game! you now have a scare of " + playerInfo.money + ".");
+        window.alert("Great job, you've survived the game! you now have a score of " + playerInfo.money + ".");
     }
     else {
-        windows.alert("You've lost your robot in life");
+        window.alert("You've lost your robot in life");
+    }
+
+    // log high score
+    if (playerInfo.money > highScore) {
+        localStorage.setItem("highscore", playerInfo.money);
+        localStorage.setItem("name", playerInfo.name);
+
+        window.alert(playerInfo.name + " now has the high score of " + playerInfo.money + "!");
+    }
+    else {
+        window.alert(playerInfo.name + " did not beat the high score of " + highScore + ". Better luck next time!");
     }
 
     // play again?
@@ -243,3 +259,4 @@ var shop = function() {
 }
 
 startGame();
+
