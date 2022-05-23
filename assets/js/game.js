@@ -104,6 +104,11 @@ var fightOrSkip = function() {
 }
 
 var fight = function(enemy, i) {
+    var playerTurn = true;
+
+    if (Math.random() > 0.5){
+        playerTurn = false;
+    }
   
     while (enemy.hp > 0 && playerInfo.hp > 0) {
         if (fightOrSkip()) {
@@ -139,6 +144,9 @@ var fight = function(enemy, i) {
         else {
             window.alert(playerInfo.name + " still has " + playerInfo.hp + " HP.");
         }
+
+        // switch turn order for next round
+        playerTurn = !playerTurn;
     }
     
 }
