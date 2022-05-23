@@ -18,7 +18,8 @@ var fight = function(enemyName, i) {
     if (promptFight === "fight" || promptFight === "FIGHT") {
         while (enemyHP > 0 && playerHP > 0) {    
             // player attacks enemy
-            enemyHP -= playerAtk;
+            var dmg = rng(playerAtk - 3, playerAtk);
+            enemyHP -= Math.max(0, dmg);
             console.log(playerName+" attacked "+enemyName+". "+enemyName+" now has "+enemyHP+" HP.");
             
             // checks enemy HP
@@ -35,7 +36,8 @@ var fight = function(enemyName, i) {
             }
 
             // enemy attacks player
-            playerHP -= enemyAtk;
+            var dmg = rng(enemyAtk - 3, enemyAtk);
+            playerHP -= Math.max(0, dmg);
             console.log(enemyName+" attacked "+playerName+". "+playerName+" now has "+playerHP+" HP.");
 
             // checks player hp
@@ -78,7 +80,7 @@ var startGame = function() {
         if (playerHP > 0) {
             window.alert("Welcome to Robot Gladiators! Round "+ (i + 1));
 
-            enemyHP = 50;
+            enemyHP = rng(40, 60);
 
             fight(enemyNames[i]);
 
@@ -178,6 +180,13 @@ var shop = function() {
             shop();
             break;
     }
+}
+
+// rng
+var rng = function(min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    return value;
 }
 
 startGame();
